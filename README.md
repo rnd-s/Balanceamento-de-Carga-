@@ -1,4 +1,4 @@
-# 🔀 Infraestrutura de Balanceamento de Carga com Alta Disponibilidade
+# Infraestrutura de Balanceamento de Carga com Alta Disponibilidade
 
 Este projeto implementa uma **infraestrutura robusta para sistemas Web**, com foco em:
 
@@ -11,28 +11,27 @@ O ambiente foi projetado para suportar **falhas críticas de servidores** e **pi
 
 ---
 
-## 🧱 Arquitetura do Projeto
+## Arquitetura do Projeto
 
 A infraestrutura é composta por **Máquinas Virtuais (VMs) isoladas**, comunicando-se através de uma rede interna, simulando um ambiente de produção real.
 
-| Componente       | Tecnologia             | Função |
-|------------------|------------------------|--------|
-| Load Balancer    | HAProxy                | Recebe todo o tráfego e distribui entre os servidores (Round Robin). |
-| App Cluster      | Nginx + Docker         | 3 réplicas da aplicação web rodando em containers isolados. |
-| Cache            | Redis                  | Cache de sessão e dados de acesso rápido. |
-| Monitoramento    | Prometheus + Grafana   | Coleta métricas e visualiza a saúde dos nós. |
-| Gateway          | pfSense (Opcional)     | Gerenciamento de rede, firewall e segmentação. |
+| Componente       | Tecnologia             | Função                                                                 |
+|------------------|------------------------|------------------------------------------------------------------------|
+| Load Balancer    | HAProxy                | Recebe todo o tráfego e distribui entre os servidores (Round Robin).  |
+| App Cluster      | Nginx + Docker         | 3 réplicas da aplicação web rodando em containers isolados.           |
+| Cache            | Redis                  | Cache de sessão e dados de acesso rápido.                             |
+| Monitoramento    | Prometheus + Grafana   | Coleta métricas e visualiza a saúde dos nós.                          |
+| Gateway          | pfSense (Opcional)     | Gerenciamento de rede, firewall e segmentação.                        |
 
 ---
 
-## ⚙️ Funcionalidades e Resultados
+## Funcionalidades e Resultados
 
-### 1️⃣ Balanceamento de Carga
+### Balanceamento de Carga
+
 Utilizando o **HAProxy**, o tráfego é distribuído igualmente entre os nós `web1`, `web2` e `web3`, evitando sobrecarga em um único servidor.
 
----
-
-### 2️⃣ Alta Disponibilidade (Failover)
+### Alta Disponibilidade (Failover)
 
 O sistema detecta falhas automaticamente nos nós de aplicação.
 
@@ -40,12 +39,9 @@ O sistema detecta falhas automaticamente nos nós de aplicação.
 O container `web1` foi desligado propositalmente (`docker stop`).
 
 **Resultado:**  
-O HAProxy identificou a falha em menos de **2 segundos** e redirecionou o tráfego para `web2` e `web3`.  
-O cliente final continuou recebendo respostas **HTTP 200 OK**, sem interrupção perceptível.
+O HAProxy identificou a falha em menos de **2 segundos** e redirecionou o tráfego para `web2` e `web3`. O cliente final continuou recebendo respostas **HTTP 200 OK**, sem interrupção perceptível.
 
----
-
-### 3️⃣ Teste de Estresse (DDoS Simulado)
+### Teste de Estresse (DDoS Simulado)
 
 Foi utilizado o **Apache Benchmark (ab)** para simular picos de acesso.
 
@@ -53,12 +49,12 @@ Foi utilizado o **Apache Benchmark (ab)** para simular picos de acesso.
 - **Concorrência:** 100 usuários simultâneos
 
 **Resultado:**  
-✔ 100% das requisições atendidas  
-✔ Zero falhas
+- 100% das requisições atendidas
+- Zero falhas
 
 ---
 
-## 📂 Estrutura do Repositório
+## Estrutura do Repositório
 
 ```text
 ├── vm2-loadbalancer/      # Configurações do HAProxy
@@ -73,18 +69,20 @@ Foi utilizado o **Apache Benchmark (ab)** para simular picos de acesso.
 └── vm5-monitor/           # Stack de Observabilidade
     ├── prometheus/
     └── docker-compose.yml
-## ▶️ Como Executar
-
-### 🔹 Requisitos
-
-* Linux (Ubuntu Server recomendado)
-* Docker Engine
-* Docker Compose
-* VirtualBox ou ambiente virtualizado equivalente
+```
 
 ---
 
-### Passo 1️⃣ — Cluster de Aplicação
+## Como Executar
+
+### Requisitos
+
+- Linux (Ubuntu Server recomendado)
+- Docker Engine
+- Docker Compose
+- VirtualBox ou ambiente virtualizado equivalente
+
+### Passo 1 - Cluster de Aplicação
 
 ```bash
 cd vm3-app
@@ -93,9 +91,7 @@ docker-compose up -d
 
 Inicia 3 servidores web nas portas `8081`, `8082` e `8083`.
 
----
-
-### Passo 2️⃣ — Load Balancer
+### Passo 2 - Load Balancer
 
 ```bash
 cd vm2-loadbalancer
@@ -104,9 +100,7 @@ docker-compose up -d
 
 O serviço estará acessível na **porta 80** da VM.
 
----
-
-### Passo 3️⃣ — Monitoramento
+### Passo 3 - Monitoramento
 
 ```bash
 cd vm5-monitor
@@ -117,23 +111,21 @@ Acesse o **Grafana** pela porta `3000`.
 
 ---
 
-## 🔐 Considerações de Segurança (Disclaimer)
+## Considerações de Segurança (Disclaimer)
 
 Este projeto foi desenvolvido com **finalidade educacional e acadêmica**.
 
-* Credenciais estão visíveis nos arquivos `docker-compose.yml` para facilitar testes.
-* **Não recomendado para produção sem ajustes.**
+- Credenciais estão visíveis nos arquivos `docker-compose.yml` para facilitar testes.
+- **Não recomendado para produção sem ajustes.**
 
 Em ambientes reais, recomenda-se:
 
-* Uso de **variáveis de ambiente (.env)** não versionadas
-* **Docker Secrets** ou **Vault**
-* Redes Docker internas sem exposição de serviços sensíveis
+- Uso de **variáveis de ambiente (.env)** não versionadas
+- **Docker Secrets** ou **Vault**
+- Redes Docker internas sem exposição de serviços sensíveis
 
 ---
 
-## 📄 Licença
+## Licença
 
 Este projeto é distribuído sob a licença **MIT**.
-
-```
