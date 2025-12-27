@@ -1,6 +1,6 @@
 # Infraestrutura de Balanceamento de Carga com Alta Disponibilidade
 
-Este projeto implementa uma **infraestrutura robusta para sistemas Web**, com foco em:
+Este projeto implementa uma **infraestrutura  para sistemas Web**, com foco em:
 
 - **Alta Disponibilidade (HA)**
 - **Balanceamento de Carga**
