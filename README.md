@@ -24,6 +24,23 @@ A infraestrutura é composta por **Máquinas Virtuais (VMs) isoladas**, comunica
 | Gateway          | pfSense (Opcional)     | Gerenciamento de rede, firewall e segmentação.                        |
 
 ---
+## Ambiente de Execução
+
+Este projeto foi desenvolvido e testado em um ambiente **virtualizado com múltiplas máquinas virtuais no VirtualBox**.
+
+**Importante:**  
+Clonar este repositório **não cria automaticamente as máquinas virtuais** nem configura a topologia de rede.
+
+Para reproduzir o experimento, é necessário:
+
+- Criar manualmente as VMs no VirtualBox
+- Configurar a rede interna entre elas
+- Atribuir os IPs conforme descrito na arquitetura
+- Instalar Docker e Docker Compose em cada VM
+- Executar os serviços conforme a seção *Como Executar*
+
+Este repositório contém **todas as configurações, scripts e documentação necessários**, mas **depende de infraestrutura externa** para funcionamento completo.
+
 
 ## Funcionalidades e Resultados
 
