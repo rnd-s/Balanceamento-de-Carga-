@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  # BALANCEAMENTO DE CARGA
+  haproxy:
+    image: haproxy:2.8
+    container_name: haproxy
+    restart: always
+    ports:
+      - "80:80"     # Tráfego HTTP
+      - "8404:8404" # Dashboard de Estatísticas
+    volumes:
+      -./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks:
+      - default
+
+  # EXPORTADOR DE MÉTRICAS (Para o Prometheus)
+  haproxy_exporter:
+    image: prom/haproxy-exporter:v0.15.0
+    container_name: haproxy_exporter
+    restart: always
+    ports:
+      - "9101:9101"
+    command:
+      - '--haproxy.scrape-uri=http://admin:banco_stats_2024@haproxy:8404/stats;csv'
+    depends_on:
+      - haproxy
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge

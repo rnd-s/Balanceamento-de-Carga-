@@ -1,0 +1,46 @@
+# --- Arquivos de Sistema Operacional (Lixo) ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# --- Arquivos de IDE (VS Code, JetBrains, etc) ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Logs e Arquivos Temporários ---
+*.log
+*.tmp
+tmp/
+logs/
+
+# --- Docker e Dados ---
+# Ignorar pastas de dados persistentes se você as trouxer para fora das VMs
+# (Isso evita subir gigabytes de dados de banco ou métricas)
+grafana_data/
+prometheus_data/
+redis_data/
+postgres_data/
+mysql_data/
+
+# --- Credenciais e Segurança ---
+# Ignorar arquivos de variáveis de ambiente com senhas reais
+.env
+.env.local
+.env.production
+
+# Ignorar chaves SSH e Certificados SSL privados (se houver)
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+
+# --- Outros ---
+# Se você gerar relatórios temporários ou zips
+*.zip
+*.tar.gz
+evidencia_temp.png
+
+

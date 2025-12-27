@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  # Monitoramento do HAProxy (IP da VM 2)
+  - job_name: "haproxy"
+    static_configs:
+      - targets: ["10.0.10.10:9101"]
+    labels:
+      service: "load_balancer"
+
+  # Monitoramento do Próprio Prometheus
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
