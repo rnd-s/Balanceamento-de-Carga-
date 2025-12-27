@@ -1,40 +1,3 @@
-Excelente conteúdo 👏
-Tecnicamente o README **está muito bom** — dá pra entender o projeto, os testes e a arquitetura.
-Agora vou te ajudar a **elevar para nível portfólio acadêmico / banca / GitHub profissional** sem mudar a essência.
-
-Vou dividir em **análise rápida** + **versão melhorada** (pronta pra colar).
-
----
-
-# 🔎 Análise rápida do seu README
-
-### ✔ Pontos fortes
-
-* Objetivo bem definido (HA, LB, Monitoramento)
-* Arquitetura clara por VMs
-* Testes reais (failover + stress)
-* Disclaimer de segurança (excelente, pouca gente lembra disso)
-
-### 🔧 O que pode melhorar
-
-1. Falta um **título + badges**
-2. A tabela de arquitetura **não está em Markdown** (no GitHub ela quebra)
-3. Faltam:
-
-   * requisitos mínimos
-   * diagrama (mesmo que seja imagem depois)
-   * licença
-4. Pequenos ajustes de linguagem acadêmica
-
----
-
-# ✅ README.md — Versão Refinada (recomendada)
-
-> 🔥 Você pode **copiar e colar direto** no seu README
-
----
-
-````markdown
 # 🔀 Infraestrutura de Balanceamento de Carga com Alta Disponibilidade
 
 Este projeto implementa uma **infraestrutura robusta para sistemas Web**, com foco em:
@@ -110,10 +73,6 @@ Foi utilizado o **Apache Benchmark (ab)** para simular picos de acesso.
 └── vm5-monitor/           # Stack de Observabilidade
     ├── prometheus/
     └── docker-compose.yml
-````
-
----
-
 ## ▶️ Como Executar
 
 ### 🔹 Requisitos
@@ -158,7 +117,7 @@ Acesse o **Grafana** pela porta `3000`.
 
 ---
 
-## Considerações de Segurança (Disclaimer)
+## 🔐 Considerações de Segurança (Disclaimer)
 
 Este projeto foi desenvolvido com **finalidade educacional e acadêmica**.
 
@@ -175,4 +134,6 @@ Em ambientes reais, recomenda-se:
 
 ## 📄 Licença
 
-Este projeto é distribuído sob a licença MIT
+Este projeto é distribuído sob a licença **MIT**.
+
+```
