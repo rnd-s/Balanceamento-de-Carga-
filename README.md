@@ -1,6 +1,6 @@
 
 
-Este projeto implementa uma infraestrutura robusta para um sistema bancário simulado, focado em Alta Disponibilidade (HA), Balanceamento de Carga e Monitoramento em Tempo Real.
+Este projeto implementa uma infraestrutura robusta para um sistema Web, focado em Alta Disponibilidade (HA), Balanceamento de Carga e Monitoramento em Tempo Real.
 
 O objetivo foi criar um ambiente que suporte falhas críticas de servidores e picos de tráfego sem interromper o serviço para o cliente final.
 
