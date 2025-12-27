@@ -289,6 +289,7 @@ Em ambientes reais, recomenda-se:
 - Uso de **variáveis de ambiente (.env)** não versionadas
 - **Docker Secrets** ou **Vault**
 - Redes Docker internas sem exposição de serviços sensíveis
+- O projeto roda todo na porta 80 (HTTP). Num cenário real, o HAProxy deveria fazer o SSL Offloading (receber na 443 HTTPS, descriptografar e passar para o interno via HTTP)
 
 ---
 
