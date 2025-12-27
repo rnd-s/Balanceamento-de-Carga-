@@ -41,16 +41,182 @@ O container `web1` foi desligado propositalmente (`docker stop`).
 **Resultado:**  
 O HAProxy identificou a falha em menos de **2 segundos** e redirecionou o tráfego para `web2` e `web3`. O cliente final continuou recebendo respostas **HTTP 200 OK**, sem interrupção perceptível.
 
-### Teste de Estresse (DDoS Simulado)
+---
 
-Foi utilizado o **Apache Benchmark (ab)** para simular picos de acesso.
+##  Como Testar o Sistema
 
-- **Cenário:** 10.000 requisições
-- **Concorrência:** 100 usuários simultâneos
+Esta seção descreve **os testes reais executados**, incluindo **comandos**, **métricas observadas** e **resultados obtidos**, garantindo a reprodutibilidade do experimento.
 
-**Resultado:**  
-- 100% das requisições atendidas
-- Zero falhas
+---
+
+###  Teste 1 — Monitoramento de Saúde dos Backends (HAProxy)
+
+**Objetivo:**
+Verificar se o HAProxy detecta corretamente o estado dos servidores backend (`UP/DOWN`).
+
+ **VM:** VM 2 — HAProxy
+
+Execute:
+
+```bash
+curl -s http://10.0.10.10:9101/metrics | grep "haproxy_server_up"
+```
+
+**Resultado esperado:**
+
+* Valor `1` → servidor **UP**
+* Valor `0` → servidor **DOWN**
+
+**Resultado obtido:**
+
+```text
+haproxy_server_up{backend="web_servers",server="web1"} 1
+haproxy_server_up{backend="web_servers",server="web2"} 1
+haproxy_server_up{backend="web_servers",server="web3"} 1
+```
+
+Caso apareça `0`, aguarde cerca de **10 segundos**, pois o *health check* do HAProxy possui atraso intencional.
+
+---
+
+###  Teste 2 — Teste de Estresse (Carga / DDoS Simulado)
+
+**Objetivo:**
+Simular um pico de acessos concorrentes e validar o balanceamento de carga.
+
+ **VM:** VM 5 — Monitor (atuando como cliente)
+
+Instale o Apache Benchmark (se necessário):
+
+```bash
+sudo apt-get install apache2-utils
+```
+
+Execute o teste:
+
+```bash
+ab -n 10000 -c 100 http://10.0.10.10/
+```
+
+**Parâmetros:**
+
+* `-n 10000` → 10.000 requisições totais
+* `-c 100` → 100 usuários simultâneos
+
+**Resultado obtido:**
+
+```text
+Complete requests:      10000
+Failed requests:        0
+Requests per second:    75.59 [#/sec]
+```
+
+ **100% das requisições atendidas**
+ **Zero falhas**
+Serviço permaneceu disponível durante todo o teste
+
+---
+
+###  Teste 3 — Prova do Balanceamento de Carga via Métricas
+
+Após o teste de estresse, volte à **VM 2 (HAProxy)** e execute:
+
+```bash
+curl -s http://10.0.10.10:9101/metrics | grep "haproxy_backend_sessions_total"
+```
+
+**Resultado obtido:**
+
+```text
+haproxy_backend_sessions_total{backend="web_servers"} 10000
+```
+
+ Este valor confirma que o HAProxy processou todas as requisições, distribuindo-as entre `web1`, `web2` e `web3`.
+
+---
+
+###  Teste 4 — Monitoramento em Tempo Real (Modo Texto)
+
+**Objetivo:**
+Visualizar em tempo real o estado dos servidores backend.
+
+ **VM:** VM 2 — HAProxy
+
+Execute:
+
+```bash
+watch -n 1 "curl -s http://10.0.10.10:9101/metrics | grep haproxy_server_up"
+```
+
+**Interpretação:**
+
+* `1` → servidor ativo
+* `0` → servidor indisponível
+
+---
+
+###  Teste 5 — Failover (Alta Disponibilidade)
+
+####  Sabotagem Controlada
+
+ **VM:** VM 3 — App
+
+Desligue propositalmente um servidor:
+
+```bash
+sudo docker stop web1
+```
+
+---
+
+####  Observação do Failover
+
+**VM:** VM 2 — HAProxy
+
+Após **2 a 5 segundos**, o monitoramento mostrará:
+
+```text
+haproxy_server_up{server="web1"} 0
+```
+
+Confirmando que o HAProxy detectou a falha.
+
+---
+
+####  Prova de Vida do Sistema
+
+Ainda com o `web1` desligado, execute:
+
+```bash
+curl -I http://10.0.10.10
+```
+
+**Resultado esperado:**
+
+```text
+HTTP/1.1 200 OK
+```
+
+ O serviço permanece disponível
+O tráfego é redirecionado automaticamente para `web2` e `web3`
+
+---
+
+####  Ressurreição do Nó
+
+**VM:** VM 3 — App
+
+```bash
+sudo docker start web1
+```
+
+Após alguns segundos, o status volta para:
+
+```text
+haproxy_server_up{server="web1"} 1
+```
+
+ O nó é reintegrado automaticamente ao cluster
 
 ---
 
