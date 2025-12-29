@@ -240,8 +240,8 @@ haproxy_server_up{server="web1"} 1
 ## Estrutura do Repositório
 
 ```text
-├── vm2-loadbalancer/      # Configurações do HAProxy
-│   ├── haproxy.cfg
+├── vm2-loadbalancer/       # Configurações do HAProxy
+│   ├── haproxy.cfg          
 │   └── docker-compose.yml
 │
 ├── vm3-app/               # Cluster de Aplicação (Nginx + Redis)
@@ -249,9 +249,13 @@ haproxy_server_up{server="web1"} 1
 │   ├── nginx/             # Configurações do proxy reverso
 │   └── docker-compose.yml
 │
-└── vm5-monitor/           # Stack de Observabilidade
-    ├── prometheus/
-    └── docker-compose.yml
+├── vm5-monitor/           # Stack de Observabilidade
+│   ├── prometheus/
+│   └── docker-compose.yml
+│
+└── vagrant/
+    ├── Vagrantfile
+    └── provision/
 ```
 
 ---
@@ -265,10 +269,9 @@ haproxy_server_up{server="web1"} 1
 - Docker Compose
 - VirtualBox ou ambiente virtualizado equivalente
 
-## Execução Automatizada (Vagrant)
+## Execução Automatizada (Vagrant -- Opcional)
 
-Opcionalmente, toda a infraestrutura pode ser provisionada automaticamente
-utilizando **Vagrant + VirtualBox**.
+Mesmo com Vagrant, **os containers Docker devem ser iniciados manualmente**.
 
 ### Requisitos
 - VirtualBox
@@ -280,6 +283,9 @@ utilizando **Vagrant + VirtualBox**.
 cd vagrant
 vagrant up
 
+```
+Após isso, acesse cada VM e execute manualmente os docker-compose.yml correspondentes.
+ 
 ### Passo 1 - Cluster de Aplicação
 
 ```bash
