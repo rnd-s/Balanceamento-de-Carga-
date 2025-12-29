@@ -265,6 +265,21 @@ haproxy_server_up{server="web1"} 1
 - Docker Compose
 - VirtualBox ou ambiente virtualizado equivalente
 
+## Execução Automatizada (Vagrant)
+
+Opcionalmente, toda a infraestrutura pode ser provisionada automaticamente
+utilizando **Vagrant + VirtualBox**.
+
+### Requisitos
+- VirtualBox
+- Vagrant
+
+### Subir o ambiente
+
+```bash
+cd vagrant
+vagrant up
+
 ### Passo 1 - Cluster de Aplicação
 
 ```bash
